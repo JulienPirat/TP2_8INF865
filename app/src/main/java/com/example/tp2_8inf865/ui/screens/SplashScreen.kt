@@ -39,8 +39,8 @@ class SplashScreen : ComponentActivity() {
 }
 
 @Composable
-fun SplashScreenImage(modifier: Modifier = Modifier) {
-    Image(painter = painterResource(R.drawable.ic_launcher_foreground), contentDescription = null)
+fun SplashScreenImage() {
+    Image(painter = painterResource(R.drawable.d20), contentDescription = null, modifier = Modifier)
 }
 
 @Preview(showBackground = true)
