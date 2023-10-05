@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Edit
@@ -19,19 +20,25 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.tp2_8inf865.ui.screens.GameScreen
 import com.example.tp2_8inf865.ui.screens.HomeScreen
+import com.example.tp2_8inf865.ui.screens.ScreensList
 import com.example.tp2_8inf865.ui.screens.StoryElementsScreen
 import com.example.tp2_8inf865.ui.theme.TP2_8INF865Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             TP2_8INF865Theme {
                 // A surface container using the 'background' color from the theme
@@ -48,37 +55,60 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BuildScaffold(modifier: Modifier = Modifier) {
-    var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf("Sessions", "Home", "Story Elements")
+    val navController = rememberNavController()
+
+    val items = listOf(
+        ScreensList.Game,
+        ScreensList.Home,
+        ScreensList.StoryElements
+    )
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            NavigationBar {
-                items.forEachIndexed { index, item ->
+            NavigationBar (
+                modifier = Modifier,
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+
+                items.forEach { screen ->
                     NavigationBarItem(
                         icon = {
-                            when(index) {
-                                0 -> Icon(Icons.Filled.AccountCircle, contentDescription = item)
-                                1 -> Icon(Icons.Filled.Home, contentDescription = item)
-                                2 -> Icon(Icons.Filled.Edit, contentDescription = item)
+                            when(screen.route){
+                                "game" -> Icon(Icons.Filled.AccountCircle, contentDescription = stringResource(screen.resourceId))
+                                "home" -> Icon(Icons.Filled.Home, contentDescription = stringResource(screen.resourceId))
+                                "story_elements" -> Icon(Icons.Filled.Edit, contentDescription = stringResource(screen.resourceId))
                             }
                         },
-                        label = { Text(item) },
-                        selected = selectedItem == index,
-                        onClick = { selectedItem = index }
+                        label = { Text(stringResource(screen.resourceId)) },
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                // on the back stack as users select items
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // reselecting the same item
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                restoreState = true
+                            }
+                        }
                     )
                 }
             }
         }
     ) {
-        when(selectedItem) {
-            0 -> GameScreen()
-            1 -> HomeScreen()
-            2 -> StoryElementsScreen()
+        NavHost(navController, startDestination = ScreensList.Home.route, Modifier.padding(it)) {
+            composable("game") { GameScreen() }
+            composable("home") { HomeScreen() }
+            composable("story_elements") { StoryElementsScreen() }
         }
     }
-
 }
 
 @Preview(showBackground = true)

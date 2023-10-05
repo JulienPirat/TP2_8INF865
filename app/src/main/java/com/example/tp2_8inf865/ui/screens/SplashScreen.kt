@@ -29,6 +29,8 @@ class SplashScreen : ComponentActivity() {
                     LaunchedEffect(key1 = true){
                         delay(2000)
                         Intent(applicationContext,MainActivity::class.java).also {
+                            //it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            //This didn't worked so instead configured the activity in the manifest to hold no history
                             startActivity(it)
                         }
                     }
