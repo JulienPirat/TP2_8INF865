@@ -15,9 +15,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -36,25 +42,132 @@ import com.example.tp2_8inf865.ui.screens.StoryElementsScreen
 import com.example.tp2_8inf865.ui.theme.TP2_8INF865Theme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             TP2_8INF865Theme {
+
+                val windowSize = calculateWindowSizeClass(activity = this)
+
+                /*
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    BuildScaffold()
+                    BuildScaffold(windowSize = windowSize)
+                }
+                 */
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    NavigationBar(windowSize = windowSize);
                 }
             }
         }
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
+    val navController = rememberNavController()
+
+    val items = listOf(
+        ScreensList.Game,
+        ScreensList.Home,
+        ScreensList.StoryElements
+    )
+
+    val showNavigationRail = windowSize.widthSizeClass != WindowWidthSizeClass.Compact
+
+    Scaffold(
+        modifier = modifier,
+        bottomBar = {
+            if(!showNavigationRail){
+                NavigationBar (
+                    modifier = Modifier,
+                ) {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+
+                    items.forEach { screen ->
+                        NavigationBarItem(
+                            icon = {
+                                when(screen.route){
+                                    "game" -> Icon(Icons.Filled.AccountCircle, contentDescription = stringResource(screen.resourceId))
+                                    "home" -> Icon(Icons.Filled.Home, contentDescription = stringResource(screen.resourceId))
+                                    "story_elements" -> Icon(Icons.Filled.Edit, contentDescription = stringResource(screen.resourceId))
+                                }
+                            },
+                            label = { Text(stringResource(screen.resourceId)) },
+                            selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
+                            }
+                        )
+                    }
+                }
+            }else{
+                NavigationRail (modifier = Modifier,
+                ) {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+
+                    items.forEach { screen ->
+                        NavigationRailItem(
+                            icon = {
+                                when(screen.route){
+                                    "game" -> Icon(Icons.Filled.AccountCircle, contentDescription = stringResource(screen.resourceId))
+                                    "home" -> Icon(Icons.Filled.Home, contentDescription = stringResource(screen.resourceId))
+                                    "story_elements" -> Icon(Icons.Filled.Edit, contentDescription = stringResource(screen.resourceId))
+                                }
+                            },
+                            label = { Text(stringResource(screen.resourceId)) },
+                            selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    ) {
+        NavHost(navController, startDestination = ScreensList.Home.route, Modifier.padding(it)) {
+            composable("game") { GameScreen() }
+            composable("home") { HomeScreen() }
+            composable("story_elements") { StoryElementsScreen() }
+        }
+    }
+}
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BuildScaffold(modifier: Modifier = Modifier) {
+fun BuildScaffold(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
     val navController = rememberNavController()
 
     val items = listOf(
@@ -108,13 +221,5 @@ fun BuildScaffold(modifier: Modifier = Modifier) {
             composable("home") { HomeScreen() }
             composable("story_elements") { StoryElementsScreen() }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TP2_8INF865Theme {
-        BuildScaffold()
     }
 }
