@@ -27,24 +27,27 @@ fun GameScreen(StartValue: Int = 90) {
 
     val jokeAPI = retrofit.create(ApiService::class.java)
     val call = jokeAPI.getJoke()
-    var jokeGiven : Joke? = null;
+    var jokeGiven : Joke?
 
-    var text by remember { mutableStateOf("No joke found") }
+    var text by remember { mutableStateOf("") }
 
     /**
      * Request API to get users Data
      */
-    call.enqueue(object : Callback<Joke> {
+    if(text.isBlank())
+    {
+        call.enqueue(object : Callback<Joke> {
 
-        override fun onResponse(p0: Call<Joke>, res: Response<Joke>) {
-            jokeGiven = res.body()
-            text = jokeGiven?.punchline ?: "No joke found"
-        }
+            override fun onResponse(p0: Call<Joke>, res: Response<Joke>) {
+                jokeGiven = res.body()
+                text = jokeGiven?.punchline ?: "No joke found"
+            }
 
-        override fun onFailure(p0: Call<Joke>, p1: Throwable) {
-            println(p1.toString())
-        }
-    })
+            override fun onFailure(p0: Call<Joke>, p1: Throwable) {
+                println(p1.toString())
+            }
+        })
+    }
         Text(text =  text,
             Modifier.padding(start = StartValue.dp))
 
