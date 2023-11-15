@@ -50,6 +50,8 @@ android {
 
 dependencies {
 
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
     implementation("com.google.dagger:hilt-android:2.44.1")
     kapt("com.google.dagger:hilt-android-compiler:2.44.1")
     implementation("androidx.core:core-ktx:1.9.0")
