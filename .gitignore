@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+.idea/*
+.gradle/*
+
 # Log file
 *.log
 
@@ -31,3 +34,16 @@ local.properties
 .gradle/8.0/checksums/sha1-checksums.bin
 .gradle/8.0/checksums/md5-checksums.bin
 .gradle/8.0/checksums/checksums.lock
+.gradle/8.0/checksums/checksums.lock
+.gradle/8.0/checksums/md5-checksums.bin
+.gradle/8.0/checksums/sha1-checksums.bin
+.gradle/8.0/executionHistory/executionHistory.bin
+.gradle/8.0/executionHistory/executionHistory.lock
+.gradle/8.0/fileHashes/fileHashes.bin
+.gradle/8.0/fileHashes/fileHashes.lock
+.gradle/8.0/fileHashes/resourceHashesCache.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/file-system.probe
+.idea/misc.xml
+local.properties
