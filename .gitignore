@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+.idea/*
+.gradle/*
+
 # Log file
 *.log
 
@@ -22,3 +25,25 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+local.properties
+.idea/misc.xml
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/8.0/fileHashes/fileHashes.lock
+.gradle/8.0/fileHashes/fileHashes.bin
+.gradle/8.0/checksums/sha1-checksums.bin
+.gradle/8.0/checksums/md5-checksums.bin
+.gradle/8.0/checksums/checksums.lock
+.gradle/8.0/checksums/checksums.lock
+.gradle/8.0/checksums/md5-checksums.bin
+.gradle/8.0/checksums/sha1-checksums.bin
+.gradle/8.0/executionHistory/executionHistory.bin
+.gradle/8.0/executionHistory/executionHistory.lock
+.gradle/8.0/fileHashes/fileHashes.bin
+.gradle/8.0/fileHashes/fileHashes.lock
+.gradle/8.0/fileHashes/resourceHashesCache.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/file-system.probe
+.idea/misc.xml
+local.properties
