@@ -188,18 +188,20 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
             }
         },
         content = {
-           // Scaffold (modifier = modifier){
                 NavHost(
                     navController,
                     startDestination = ScreensList.Home.route,
-                    //Modifier.padding(innerPadding)
                 ) {
-                    composable("game") { GameScreen() }
-                    composable("home") { HomeScreen() }
-                    composable("story_elements") { StoryElementsScreen() }
+                    if(!showNavigationRail){
+                        composable("game") { GameScreen(10) }
+                        composable("home") { HomeScreen(10) }
+                        composable("story_elements") { StoryElementsScreen(10) }
+                     }else{
+                        composable("game") { GameScreen() }
+                        composable("home") { HomeScreen() }
+                        composable("story_elements") { StoryElementsScreen()
+                    }
                 }
-           // }
-
         }
-    )
+    })
 }
