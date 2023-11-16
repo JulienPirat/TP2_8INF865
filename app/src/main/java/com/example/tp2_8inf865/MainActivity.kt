@@ -36,22 +36,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.tp2_8inf865.data.repository.JokesRepository
 import com.example.tp2_8inf865.ui.screens.GameScreen
 import com.example.tp2_8inf865.ui.screens.HomeScreen
 import com.example.tp2_8inf865.ui.screens.ScreensList
 import com.example.tp2_8inf865.ui.screens.StoryElementsScreen
 import com.example.tp2_8inf865.ui.theme.TP2_8INF865Theme
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        var windowSize = calculateWindowSizeClass(activity =this)
 
         setContent {
             TP2_8INF865Theme {
@@ -162,7 +156,7 @@ fun RailNavigation(modifier: Modifier = Modifier, items: List<ScreensList>, curr
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass, text : String) {
+fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
     val navController = rememberNavController()
 
     val items = listOf(
