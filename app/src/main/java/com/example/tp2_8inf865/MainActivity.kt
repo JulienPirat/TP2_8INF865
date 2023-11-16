@@ -195,14 +195,14 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
                         composable("home") { HomeScreen(10) }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
-                            StoryElementsScreen(10, viewModel)
+                            StoryElementsScreen(modifier, 10, viewModel)
                         }
                      }else{
                         composable("game") { GameScreen() }
                         composable("home") { HomeScreen() }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
-                            StoryElementsScreen(viewModel = viewModel)
+                            StoryElementsScreen(modifier, viewModel = viewModel)
                     }
                 }
         }

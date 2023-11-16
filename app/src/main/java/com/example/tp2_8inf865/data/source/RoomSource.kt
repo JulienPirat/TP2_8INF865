@@ -10,7 +10,7 @@ class RoomSource @Inject constructor(
     private val db: AppDatabase
 ){
 
-    suspend fun getCacheJokes(applicationContext : Context): List<Joke> {
+    fun getCacheJokes(applicationContext : Context): List<Joke> {
 
         //var jokes : List<Joke>
 
@@ -24,7 +24,7 @@ class RoomSource @Inject constructor(
         return  jokes
     }
 
-    suspend fun addJoke(applicationContext : Context, joke : Joke){
+    fun addJoke(applicationContext : Context, joke : Joke){
         /*
         val db = AppDatabase.getDatabase(
             applicationContext

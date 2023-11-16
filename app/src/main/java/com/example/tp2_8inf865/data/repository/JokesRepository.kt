@@ -11,14 +11,11 @@ class JokesRepository @Inject constructor(private val onlineDataSource: JokeOnli
                        private val roomUserDataSource: RoomSource,
                        private val context: Context){
 
-     suspend fun getJokes(): List<Joke> {
-        return roomUserDataSource.getCacheJokes(context)
-    }
+     fun getJokes(): List<Joke> = roomUserDataSource.getCacheJokes(context)
 
-     suspend fun getNewJoke(): Joke? {
+     suspend fun getNewJoke() {
          val jokeGiven = onlineDataSource.getNewJoke()
          roomUserDataSource.addJoke(context, jokeGiven)
-        return jokeGiven
     }
 
     /* A faire a un autre endroid
