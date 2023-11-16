@@ -8,6 +8,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun StoryElementsScreen(StartValue: Int = 90) {
-    Text(text = "Here will be everything that is story related, such as players, characters, playbooks and so on.",
+    Text(text = "Something here",
         Modifier.padding(start = StartValue.dp))
 }
