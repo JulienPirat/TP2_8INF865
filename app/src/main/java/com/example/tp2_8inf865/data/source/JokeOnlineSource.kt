@@ -2,26 +2,30 @@ package com.example.tp2_8inf865.data.source
 
 import com.example.tp2_8inf865.ApiService
 import com.example.tp2_8inf865.data.Joke
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
-import javax.inject.Singleton
+import javax.inject.Inject
 
-class JokeOnlineSource{
+class JokeOnlineSource @Inject constructor(
+    private val jokeApiService: ApiService
+){
+    fun getNewJoke() : Joke = jokeApiService.getJoke()
 
-    @Singleton
-    fun getJoke(BaseURL: String): Joke? {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BaseURL)
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build()
+             //Nothing to do more here
 
-        var JokeApiService = retrofit.create(ApiService::class.java)
-
-        val call = JokeApiService.getJoke()
-
-        var jokeGiven : Joke?
-
-        jokeGiven = call.execute().body()
+//
+//    @Singleton
+//    fun getJoke(BaseURL: String): Joke? {
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(BaseURL)
+//            .addConverterFactory(JacksonConverterFactory.create())
+//            .build()
+//
+//        var JokeApiService = retrofit.create(ApiService::class.java)
+//
+//        val call = JokeApiService.getJoke()
+//
+//        var jokeGiven : Joke?
+//
+//        jokeGiven = call.execute().body()
 /*
         call.enqueue(object : Callback<Joke> {
             override fun onResponse(p0: Call<Joke>, res: Response<Joke>) {
@@ -58,6 +62,6 @@ class JokeOnlineSource{
             }
         })
 */
-        return jokeGiven
-    }
+//        return jokeGiven
+
 }

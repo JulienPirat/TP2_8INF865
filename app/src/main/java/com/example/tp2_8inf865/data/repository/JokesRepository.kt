@@ -4,21 +4,26 @@ import android.content.Context
 import com.example.tp2_8inf865.data.Joke
 import com.example.tp2_8inf865.data.source.JokeOnlineSource
 import com.example.tp2_8inf865.data.source.RoomSource
+import javax.inject.Inject
 
 
-class JokesRepository : IRepository {
-    val jokeOnlineSource = JokeOnlineSource()
-    val RoomSource = RoomSource()
+class JokesRepository @Inject constructor(private val onlineDataSource: JokeOnlineSource,
+                       private val roomUserDataSource: RoomSource,
+                       private val context: Context){
 
-    override suspend fun getJokes(context : Context): List<Joke> {
-        return RoomSource.getCacheJokes(context)
+     suspend fun getJokes(): List<Joke> {
+        return roomUserDataSource.getCacheJokes(context)
     }
 
-    override fun getNewJoke(): Joke? {
-        return jokeOnlineSource.getJoke("https://api.yomomma.info")
+     suspend fun getNewJoke(): Joke? {
+         val jokeGiven = onlineDataSource.getNewJoke()
+         roomUserDataSource.addJoke(context, jokeGiven)
+        return jokeGiven
     }
 
-    override suspend fun addJoke(context : Context, joke : Joke){
-        RoomSource.addJoke(context, joke)
+    /* A faire a un autre endroid
+     suspend fun addJoke(context : Context, joke : Joke){
+         roomUserDataSource.addJoke(context, joke)
     }
+     */
 }
