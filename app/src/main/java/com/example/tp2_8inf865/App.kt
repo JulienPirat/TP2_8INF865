@@ -4,7 +4,4 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application()
-{
-   // val db by lazy { AppDatabase.getDatabase(context = applicationContext) }
-}
+class App : Application() {}
