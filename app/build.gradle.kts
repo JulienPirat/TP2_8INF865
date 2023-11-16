@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.room:room-common:2.6.0")
     val room_version = "2.5.0"
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -63,10 +64,18 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
 
+    //implementation("com.google.dagger:hilt-android:2.44.1")
+    //kapt("com.google.dagger:hilt-android-compiler:2.44.1")
+
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("com.google.dagger:hilt-android-gradle-plugin:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
-    implementation("com.google.dagger:hilt-android:2.44.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.44.1")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
