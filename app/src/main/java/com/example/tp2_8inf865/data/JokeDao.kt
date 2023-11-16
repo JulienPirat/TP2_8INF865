@@ -9,14 +9,14 @@ import androidx.room.Query
 @Dao
 interface JokeDao {
     @Query("SELECT * FROM jokes")
-    suspend fun getAll() : List<Joke>
+    fun getAll() : List<Joke>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(joke: Joke)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(joke: Joke)
 
     @Delete
-    suspend fun delete(joke: Joke)
+    fun delete(joke: Joke)
 
     @Query("DELETE FROM jokes")
-    suspend fun deleteAll()
+    fun deleteAll()
 }

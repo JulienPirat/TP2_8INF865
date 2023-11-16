@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -28,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -41,7 +41,10 @@ import com.example.tp2_8inf865.ui.screens.HomeScreen
 import com.example.tp2_8inf865.ui.screens.ScreensList
 import com.example.tp2_8inf865.ui.screens.StoryElementsScreen
 import com.example.tp2_8inf865.ui.theme.TP2_8INF865Theme
+import com.example.tp2_8inf865.ui.viewmodels.JokeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,7 +157,6 @@ fun RailNavigation(modifier: Modifier = Modifier, items: List<ScreensList>, curr
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
     val navController = rememberNavController()
@@ -191,11 +193,16 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
                     if(!showNavigationRail){
                         composable("game") { GameScreen(10) }
                         composable("home") { HomeScreen(10) }
-                        composable("story_elements") { StoryElementsScreen(10) }
+                        composable("story_elements") {
+                            val viewModel = hiltViewModel<JokeViewModel>()
+                            StoryElementsScreen(modifier, 10, viewModel)
+                        }
                      }else{
                         composable("game") { GameScreen() }
                         composable("home") { HomeScreen() }
-                        composable("story_elements") { StoryElementsScreen()
+                        composable("story_elements") {
+                            val viewModel = hiltViewModel<JokeViewModel>()
+                            StoryElementsScreen(modifier, viewModel = viewModel)
                     }
                 }
         }
