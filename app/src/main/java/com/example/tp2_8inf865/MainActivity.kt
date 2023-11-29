@@ -1,6 +1,7 @@
 package com.example.tp2_8inf865
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
 
                 val windowSize = calculateWindowSizeClass(activity = this)
 
+                val applicationContext = this.applicationContext
                 /*
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -62,7 +64,7 @@ class MainActivity : ComponentActivity() {
                 }
                  */
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    NavigationBar(windowSize = windowSize)
+                    NavigationBar(windowSize = windowSize, context = applicationContext)
                 }
             }
         }
@@ -158,7 +160,7 @@ fun RailNavigation(modifier: Modifier = Modifier, items: List<ScreensList>, curr
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
+fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass, context: Context) {
     val navController = rememberNavController()
 
     val items = listOf(
@@ -195,14 +197,14 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass) {
                         composable("home") { HomeScreen(10) }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
-                            StoryElementsScreen(modifier, 10, viewModel)
+                            StoryElementsScreen(modifier, 10, viewModel, context)
                         }
                      }else{
                         composable("game") { GameScreen() }
                         composable("home") { HomeScreen() }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
-                            StoryElementsScreen(modifier, viewModel = viewModel)
+                            StoryElementsScreen(modifier, viewModel = viewModel, context = context)
                     }
                 }
         }

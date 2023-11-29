@@ -50,6 +50,10 @@ android {
 }
 
 dependencies {
+
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("com.google.accompanist:accompanist-insets:0.19.0")
+
     implementation("androidx.room:room-common:2.6.0")
     val room_version = "2.5.0"
 
