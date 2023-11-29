@@ -1,16 +1,25 @@
 package com.example.tp2_8inf865.data.workers
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.tp2_8inf865.ui.viewmodels.JokeViewModel
+import com.example.tp2_8inf865.data.JokeDao
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 
-class RoomWorker @Inject constructor(private val context : Context, private var viewModel: JokeViewModel,params : WorkerParameters) : CoroutineWorker(context,params){
+@HiltWorker
+class RoomWorker @AssistedInject constructor(
+    @Assisted context : Context,
+    @Assisted params : WorkerParameters,
+    private val jokeDao: JokeDao
+) : CoroutineWorker(context,params){
     override suspend fun doWork(): Result {
 
-        viewModel.refreshJokes();
+        val test = jokeDao.getAll()
+
+        println(test.toString())
 
         delay(5000)
 

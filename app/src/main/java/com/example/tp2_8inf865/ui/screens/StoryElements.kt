@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Observer
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.tp2_8inf865.data.Joke
@@ -27,16 +26,8 @@ fun StoryElementsScreen(modifier : Modifier, StartValue: Int = 90, viewModel: Jo
     viewModel.getAndInsertNewJoke()
     //viewModel.refreshJokes()
 
-    val RoomWorkerRequest = PeriodicWorkRequestBuilder<RoomWorker>(100,TimeUnit.MINUTES)
-        //.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-        .build()
-
-
-    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "RoomWorker",
-        ExistingPeriodicWorkPolicy.KEEP,
-        RoomWorkerRequest
-    )
+    val roomWorkerRequest = PeriodicWorkRequestBuilder<RoomWorker>(1,TimeUnit.MINUTES).build()
+    WorkManager.getInstance(context).enqueue(roomWorkerRequest)
 
 
     var jokeObserver = Observer<List<Joke>> { jokes ->
