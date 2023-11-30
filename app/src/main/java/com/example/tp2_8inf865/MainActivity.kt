@@ -2,6 +2,10 @@ package com.example.tp2_8inf865
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -46,10 +51,27 @@ import com.example.tp2_8inf865.ui.viewmodels.JokeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), SensorEventListener {
+
+    private var tempLiveData : MutableLiveData<Int> = MutableLiveData(0)
+
+
+
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sensorManager = applicationContext.getSystemService(Context.SENSOR_SERVICE)
+                as SensorManager
+
+        var ambientTempSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+
+        sensorManager.registerListener(
+            this,
+            ambientTempSensor,
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
+
 
         setContent {
             TP2_8INF865Theme {
@@ -63,13 +85,14 @@ class MainActivity : ComponentActivity() {
                     BuildScaffold(windowSize = windowSize)
                 }
                  */
+
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     NavigationBar(windowSize = windowSize, context = applicationContext)
                 }
             }
         }
     }
-}
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -194,14 +217,14 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass, co
                 ) {
                     if(!showNavigationRail){
                         composable("game") { GameScreen(10) }
-                        composable("home") { HomeScreen(10) }
+                        composable("home") { HomeScreen(10,context = context, tempLiveData = tempLiveData) }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
                             StoryElementsScreen(modifier, 10, viewModel, context)
                         }
                      }else{
                         composable("game") { GameScreen() }
-                        composable("home") { HomeScreen() }
+                        composable("home") { HomeScreen(context = context, tempLiveData = tempLiveData) }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
                             StoryElementsScreen(modifier, viewModel = viewModel, context = context)
@@ -209,4 +232,15 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass, co
                 }
         }
     })
+}
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        event?.also {
+            tempLiveData.setValue(it.values[0].toInt())
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        //TODO("Not yet implemented")
+    }
 }
