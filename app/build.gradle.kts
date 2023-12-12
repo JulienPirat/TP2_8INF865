@@ -4,6 +4,9 @@ plugins {
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -51,8 +54,28 @@ android {
 
 dependencies {
 
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+
+    // Google Sing In SDK
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
+
+    // Firebase SDK
+    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    //  Firebase UI Library
+    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+    implementation("com.firebaseui:firebase-ui-database:8.0.2")
+
+    /////////////////////////////
+
     implementation("androidx.work:work-runtime-ktx:2.8.1")
     implementation("com.google.accompanist:accompanist-insets:0.19.0")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
 
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 

@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission-sdk-23 android:name="android.permission.AmbientTemperature"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission-sdk-23 android:name="android.permission.AmbientTemperature" />
 
     <application
         android:name=".App"
@@ -15,8 +15,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TP2_8INF865"
+        android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
+        <activity
+            android:name=".SignInActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sign_in"
+            android:theme="@style/Theme.TP2_8INF865" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,10 +33,11 @@
         <activity
             android:name=".ui.screens.SplashScreen"
             android:exported="true"
-            android:theme="@style/Theme.TP2_8INF865"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.TP2_8INF865">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,6 +47,7 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
+
             <!-- If you are using androidx.startup to initialize other components -->
             <meta-data
                 android:name="androidx.work.WorkManagerInitializer"

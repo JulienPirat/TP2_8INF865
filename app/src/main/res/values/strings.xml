@@ -3,4 +3,5 @@
     <string name="games">Sessions</string>
     <string name="home">Home</string>
     <string name="story_elements">Story Elements</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
 </resources>

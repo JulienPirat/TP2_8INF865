@@ -2,6 +2,7 @@ package com.example.tp2_8inf865
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -46,6 +47,7 @@ import com.example.tp2_8inf865.ui.screens.GameScreen
 import com.example.tp2_8inf865.ui.screens.HomeScreen
 import com.example.tp2_8inf865.ui.screens.ScreensList
 import com.example.tp2_8inf865.ui.screens.StoryElementsScreen
+import com.example.tp2_8inf865.ui.screens.isLoggedIn
 import com.example.tp2_8inf865.ui.theme.TP2_8INF865Theme
 import com.example.tp2_8inf865.ui.viewmodels.JokeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -92,6 +94,17 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        if(!isLoggedIn()){
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+            return
+        }
+    }
+
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -216,14 +229,14 @@ fun NavigationBar(modifier: Modifier = Modifier, windowSize: WindowSizeClass, co
                     startDestination = ScreensList.Home.route,
                 ) {
                     if(!showNavigationRail){
-                        composable("game") { GameScreen(10) }
+                        composable("game") { GameScreen(10,context) }
                         composable("home") { HomeScreen(10,context = context, tempLiveData = tempLiveData) }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()
                             StoryElementsScreen(modifier, 10, viewModel, context)
                         }
                      }else{
-                        composable("game") { GameScreen() }
+                        composable("game") { GameScreen(context = context) }
                         composable("home") { HomeScreen(context = context, tempLiveData = tempLiveData) }
                         composable("story_elements") {
                             val viewModel = hiltViewModel<JokeViewModel>()

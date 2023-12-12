@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "977925756933",
+    "project_id": "tpprogmobile-3fd19",
+    "storage_bucket": "tpprogmobile-3fd19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977925756933:android:3777ec21bd283ad69f646c",
+        "android_client_info": {
+          "package_name": "com.example.tp2_8inf865"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977925756933-vbvl6fhqgo7osm76le7qttiaefhtlksg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tp2_8inf865",
+            "certificate_hash": "10024465d7f1677e356fd085303b38d9079b3d14"
+          }
+        },
+        {
+          "client_id": "977925756933-st60dbpms943260klfphi6ak4bgilj6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWudH7e13J58nGyNAQlwKwF3_V-UpfERg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977925756933-st60dbpms943260klfphi6ak4bgilj6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
