@@ -4,16 +4,24 @@ import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
@@ -59,17 +67,30 @@ fun HomeScreen(StartValue: Int = 90,context : Context, tempLiveData : MutableLiv
         mutableStateOf(listOf<Uri>())
     }
 
-    var finalUrl = Uri.EMPTY
-
-    val pathRef = storageRef.child("images/roomba_OG.jpg")
-    pathRef.downloadUrl.addOnSuccessListener {
-        finalUrl = it
-    }.addOnFailureListener {
-        println("Failed to get url")
+    var listUri = remember {
+        mutableStateListOf<Uri>()
     }
 
-    Column {
-        //var temp = 20
+    LaunchedEffect(Unit)
+    {
+        val pathRef = storageRef.child("images")
+        pathRef.listAll().addOnSuccessListener {
+            listUri.clear()
+            it.items.forEach { item ->
+                item.downloadUrl.addOnSuccessListener { uri ->
+                    listUri.add(uri)
+                }
+            }
+        }.addOnFailureListener {
+            println("Failed to get url")
+        }
+    }
+
+    Column (
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(start = StartValue.dp)
+    ) {
         Text(
             text = "Température de : $temp °C",
             Modifier.padding(start = StartValue.dp)
@@ -77,15 +98,26 @@ fun HomeScreen(StartValue: Int = 90,context : Context, tempLiveData : MutableLiv
         Button(
             onClick = {
                 fileChoser.launch("image/*");
+
             },
             Modifier.padding(start = StartValue.dp)
         ) {
-            Text(text = "Choisir une image")
+            Text(text = "Post a meme")
         }
-        GlideImage(
-            model = finalUrl,
-            contentDescription = "Image from Firebase Storage",
-        )
+        LazyColumn(
+            Modifier.padding(start = StartValue.dp)
+        ) {
+            items(items = listUri) { uri ->
+                GlideImage(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .height(300.dp)
+                        .width(300.dp),
+                    model = uri,
+                    contentDescription = "Image",
+                )
+            }
+        }
     }
 }
 
