@@ -58,7 +58,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
     // Google Sing In SDK
-    implementation("com.google.android.gms:play-services-auth:20.5.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // Firebase SDK
     implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
@@ -69,6 +69,19 @@ dependencies {
     //  Firebase UI Library
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     implementation("com.firebaseui:firebase-ui-database:8.0.2")
+    implementation("com.firebaseui:firebase-ui-storage:8.0.2")
+
+    //Glide
+    implementation("com.github.bumptech.glide:glide:4.4.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
+    ksp("com.github.bumptech.glide:ksp:4.14.2")
+
+    //Glide Compose
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
+    // Add the dependency for the Cloud Storage library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-storage")
 
     /////////////////////////////
 
